@@ -1,0 +1,3 @@
+Pillow>=4.1.1
+requests>=2.18.1
+slimit>=0.8.1
