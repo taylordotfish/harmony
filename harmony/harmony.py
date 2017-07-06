@@ -32,7 +32,7 @@ import re
 import sys
 import traceback
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 BASE_URL = "https://discordapp.com/api/v6/"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
@@ -50,6 +50,7 @@ Commands:
   register      Register a new account.
   verify        Verify your email address.
   resend        Resend the verification email.
+  tag           Get your account tag.
   get-details   Get your current account details.
   set-details   Update account username, email, password, or avatar.
   get-settings  Get account settings.
@@ -311,6 +312,7 @@ class InteractiveDiscord:
             "log-out": self.log_out,
             "register": self.register,
             "verify": self.verify_email,
+            "tag": self.get_tag,
             "resend": self.resend_verification_email,
             "get-details": self.get_account_details,
             "set-details": self.set_account_details,
@@ -501,6 +503,17 @@ class InteractiveDiscord:
             return False
 
         print("Resent verification email.")
+        return True
+
+    def get_tag(self):
+        if not self.ensure_auth():
+            return False
+        success, response = self.dc.get_account_details()
+        if not success:
+            print_errors(response, "Could not get account tag. Errors:")
+            return False
+
+        print("{}#{}".format(response["username"], response["discriminator"]))
         return True
 
     def get_account_details(self):

@@ -1,13 +1,14 @@
 Harmony
 =======
 
-Version 0.1.0
+Version 0.2.0
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service [Discord]. Currently, it allows you to:
 
 * Create an account
 * Verify your email address
+* View your account tag
 * Change your username, email address, password, and avatar
 * Change safety and privacy settings
 
