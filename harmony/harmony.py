@@ -32,7 +32,7 @@ import re
 import sys
 import traceback
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 BASE_URL = "https://discordapp.com/api/v6/"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
@@ -621,9 +621,9 @@ class InteractiveDiscord:
         answer = input("Change explicit message filter? [y/N] ")
         if answer.lower().startswith("y"):
             print("Options:")
-            print("[0] Scan messages from everyone.")
+            print("[0] Don't scan messages from anyone.")
             print("[1] Scan messages from everyone except friends.")
-            print("[2] Don't scan messages from anyone.")
+            print("[2] Scan messages from everyone.")
             while True:
                 try:
                     choice = int(input("Enter a choice: "))
