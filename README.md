@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.2.1
+Version 0.2.2
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service [Discord]. Currently, it allows you to:
