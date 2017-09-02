@@ -32,7 +32,7 @@ import re
 import sys
 import traceback
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 BASE_URL = "https://discordapp.com/api/v6/"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
