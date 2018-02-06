@@ -190,6 +190,21 @@ class Discord:
         r = self.post("auth/verify/resend", auth=True)
         return (r.ok, None)
 
+    def authorize_ip(self, token, captcha_key=None):
+        headers = {
+            "Referer": "https://discordapp.com/authorize-ip?token=" + token,
+        }
+
+        data = {"token": token}
+        if captcha_key is not None:
+            data["captcha_key"] = captcha_key
+
+        r = self.post(
+            "auth/authorize-ip", json=data, headers=headers,
+            allow_errors={400}, browser=True,
+        )
+        return (r.ok, r.json())
+
     def get_account_details(self):
         r = self.get("users/@me", auth=True)
         return (r.ok, r.json())

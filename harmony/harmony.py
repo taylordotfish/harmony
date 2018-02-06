@@ -114,6 +114,7 @@ class InteractiveDiscord:
             "log-out": self.log_out,
             "register": self.register,
             "verify": self.verify_email,
+            "authorize-ip": self.authorize_ip,
             "tag": self.get_tag,
             "resend": self.resend_verification_email,
             "get-details": self.get_account_details,
@@ -199,23 +200,26 @@ class InteractiveDiscord:
             return True, response
 
         if "captcha_key" not in response:
-            print_errors("{} Errors:".format(error_message))
+            if error_message is not None:
+                print_errors("{} Errors:".format(error_message))
             return False, response
 
         captcha_key = self.get_captcha_key()
         print()
         if captcha_key is None:
-            print(error_message)
+            if error_message is not None:
+                print(error_message)
             return False, response
 
         success, response = func(*args, **kwargs)
         if not success:
-            print_errors("{} Errors:".format(error_message))
+            if error_message is not None:
+                print_errors("{} Errors:".format(error_message))
             return False, response
         return True, response
 
     def log_in(self):
-        if self.dc.token:
+        if self.dc.logged_in:
             print("Note: You are already logged in.")
             answer = input("Continue with the login process? [y/N] ")
             if not answer[:1].lower() == "y":
@@ -223,29 +227,23 @@ class InteractiveDiscord:
 
         email = input("Email address: ")
         password = getpass()
-        success, response = self.dc.log_in(email, password)
+        success, response = self.try_with_captcha(
+            "Login failed.", self.dc.log_in, email, password,
+        )
 
-        if not success and "captcha_key" not in response:
-            print_errors(response, "Login failed. Errors:")
-            return False
-
-        if not success:
-            captcha_key = self.get_captcha_key()
-            print()
-            if captcha_key is None:
-                print("Login failed.")
-                return False
-
-            success, response = self.dc.log_in(email, password, captcha_key)
-            if not success:
-                print_errors(response, "Login failed. Errors:")
-                return False
-
-        print("You are now logged in.")
-        return True
+        if success:
+            print("You are now logged in.")
+        elif isinstance(response.get("email"), list):
+            ip_needs_auth = any(
+                re.search("new login location", error, re.I)
+                for error in response["email"])
+            if ip_needs_auth:
+                print("You must authorize this new login location.")
+                print('Check your email and use the "authorize-ip" command.')
+        return success
 
     def log_out(self):
-        if not self.dc.token:
+        if not self.dc.logged_in:
             print("You are already logged out.")
             return False
 
@@ -264,35 +262,17 @@ class InteractiveDiscord:
                 break
             print("Passwords do not match.")
 
-        success, response = self.dc.register(
-            email=email, username=username, password=password,
+        success, response = self.try_with_captcha(
+            "Registration failed.", self.dc.register, email=email,
+            username=username, password=password,
         )
-
         print()
-        if not success and "captcha_key" not in response:
-            print_errors(response, "Registration failed. Errors:")
-            return False
 
-        if not success:
-            captcha_key = self.get_captcha_key()
-            print()
-            if captcha_key is None:
-                print("Registration failed.")
-                return False
-
-            success, response = self.dc.register(
-                email=email, username=username, password=password,
-                captcha_key=captcha_key,
-            )
-
-            if not success:
-                print_errors(response, "Registration failed. Errors:")
-                return False
-
-        print("You have successfully registered.")
-        print('You should verify your email address with the "verify" '
-              "command.")
-        return True
+        if success:
+            print("You have successfully registered.")
+            print('You should verify your email address with the "verify" '
+                  "command.")
+        return success
 
     def verify_email(self):
         print("Enter the verification link you received by email.")
@@ -306,27 +286,14 @@ class InteractiveDiscord:
             return False
         token = match.group(1)
 
-        success, response = self.dc.verify_email(token)
+        success, response = self.try_with_captcha(
+            "Verification failed.", self.dc.verify_email, token,
+        )
         print()
 
-        if not success and "captcha_key" not in response:
-            print_errors(response, "Verification failed. Errors:")
-            return False
-
-        if not success:
-            captcha_key = self.get_captcha_key()
-            print()
-            if captcha_key is None:
-                print("Verification failed.")
-                return False
-
-            success, response = self.dc.verify_email(token, captcha_key)
-            if not success:
-                print_errors(response, "Verification failed. Errors:")
-                return False
-
-        print("Your email address is now verified.")
-        return True
+        if success:
+            print("Your email address is now verified.")
+        return success
 
     def resend_verification_email(self):
         if not self.ensure_auth():
@@ -339,6 +306,28 @@ class InteractiveDiscord:
 
         print("Resent verification email.")
         return True
+
+    def authorize_ip(self):
+        print("Enter the new location verification link you received by "
+              "email.")
+        print("The email should contain a link that looks like this:")
+        print("https://discordapp.com/authorize-ip?token=<token>")
+        link = input("Enter this link: ")
+
+        match = re.search(r"token=([A-Za-z0-9_\.\-\+]+)", link)
+        if match is None:
+            print("Could not extract token from link.")
+            return False
+        token = match.group(1)
+
+        success, response = self.try_with_captcha(
+            "Verification failed.", self.dc.authorize_ip, token,
+        )
+        print()
+
+        if success:
+            print("New location verified. You may now log in.")
+        return success
 
     def get_tag(self):
         if not self.ensure_auth():
