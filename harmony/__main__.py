@@ -1,4 +1,4 @@
-# Copyright (C) 2017 nickolas360 <contact@nickolas360.com>
+# Copyright (C) 2017-2018 nickolas360 <contact@nickolas360.com>
 #
 # This file is part of Harmony.
 #
@@ -43,6 +43,7 @@ def main():
         usage()
     interactive = InteractiveDiscord(debug=debug)
     interactive.command_loop()
+
 
 if __name__ == "__main__":
     main()
