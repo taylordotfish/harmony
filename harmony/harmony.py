@@ -1,4 +1,4 @@
-# Copyright (C) 2017 taylor.fish <contact@taylor.fish>
+# Copyright (C) 2017-2018 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
 #
@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
 
+from .discord import Discord, __version__
 from .user_agents import random_user_agent
 from librecaptcha import get_token
 
 from PIL import Image
 from requests.exceptions import HTTPError
-import requests
 
 from io import BytesIO
 import base64
@@ -32,14 +32,10 @@ import re
 import sys
 import traceback
 
-__version__ = "0.2.2"
+assert __version__
 
-BASE_URL = "https://discordapp.com/api/v6/"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
 RECAPTCHA_SITE_URL = "https://discordapp.com:443"
-
-PROJECT_URL = "https://github.com/taylordotfish/harmony"
-USER_AGENT = "DiscordBot ({}, {})".format(PROJECT_URL, __version__)
 
 INTERACTIVE_HELP = """\
 Commands:
@@ -56,10 +52,6 @@ Commands:
   get-settings  Get account settings.
   set-settings  Update account settings. (Not all settings are supported.)
 """
-
-
-def get_full_url(url):
-    return BASE_URL.rstrip("/") + "/" + url
 
 
 def getpass(prompt="Password: ", stream=None):
@@ -95,196 +87,6 @@ def print_errors(response, message=None, file=sys.stdout):
             print(" " * 8 + error, file=file)
 
 
-class Discord:
-    def __init__(self, browser_user_agent, super_properties,
-                 user_agent=USER_AGENT, debug=False):
-        self.user_agent = user_agent
-        self.browser_user_agent = browser_user_agent
-        self.super_properties = super_properties
-        self._debug = debug
-
-        self.super_properties.setdefault("referrer", "")
-        self.super_properties.setdefault("referring_domain", "")
-
-        self.token = None
-        self.fingerprint = None
-
-    def debug(self, *args, **kwargs):
-        if self._debug:
-            print(*args, file=sys.stderr, **kwargs)
-
-    def get_headers(self, headers, auth, browser):
-        if browser:
-            self.ensure_browser_ua()
-
-        headers = headers or {}
-        user_agent = self.browser_user_agent if browser else self.user_agent
-        headers.setdefault("User-Agent", user_agent)
-
-        if auth and self.token:
-            headers.setdefault("Authorization", self.token)
-
-        if browser:
-            if "X-Super-Properties" not in headers:
-                headers["X-Super-Properties"] = base64.b64encode(json.dumps(
-                    self.super_properties, separators=",:",
-                ).encode()).decode()
-            if "X-Fingerprint" not in headers:
-                headers["X-Fingerprint"] = self.get_or_request_fingerprint()
-            headers.setdefault("Origin", "https://discordapp.com")
-        return headers
-
-    def http_request(self, func, url, *, headers=None, allow_errors=None,
-                     auth=False, browser=False, no_debug_response=False,
-                     **kwargs):
-        if browser:
-            self.ensure_browser_ua()
-        headers = self.get_headers(headers, auth, browser)
-
-        method = func.__name__
-        r = func(get_full_url(url), headers=headers, **kwargs)
-
-        self.debug("[http] [{}] {}".format(method, r.url))
-        self.debug("[http] [{}] [headers] {!r}".format(method, headers))
-        if "data" in kwargs:
-            data = kwargs["data"]
-            self.debug("[http] [{}] [data] {!r}".format(method, data))
-        self.debug("[http] [{}] [status code] {}".format(
-            method, r.status_code,
-        ))
-
-        if not no_debug_response:
-            self.debug("[http] [{}] [response] {}".format(method, r.text))
-
-        if allow_errors is True or r.status_code in (allow_errors or {}):
-            return r
-
-        try:
-            r.raise_for_status()
-        except HTTPError as e:
-            try:
-                json_data = r.json()
-            except ValueError:
-                json_data = None
-
-            args = list(e.args)
-            message = (args[0] or "") if args else ""
-            args[0] = message + "\nReceived data from server: {}".format(
-                json.dumps(json_data, indent=4),
-            )
-
-            e.args = tuple(args)
-            raise e
-        return r
-
-    def get(self, *args, **kwargs):
-        return self.http_request(requests.get, *args, **kwargs)
-
-    def post(self, *args, **kwargs):
-        return self.http_request(requests.post, *args, **kwargs)
-
-    def patch(self, *args, **kwargs):
-        return self.http_request(requests.patch, *args, **kwargs)
-
-    def ensure_browser_ua(self):
-        if self.browser_user_agent is None or self.super_properties is None:
-            raise TypeError(
-                "Browser user-agent and super properties must be set.",
-            )
-
-    def request_fingerprint(self):
-        r = self.get("experiments", headers={
-            "X-Context-Properties": base64.b64encode(
-                json.dumps({"location": "Login"}, separators=",:").encode(),
-            ).decode(),
-            "Referer": "https://discordapp.com/login",
-            "X-Fingerprint": None,
-        }, browser=True)
-        self.fingerprint = r.json()["fingerprint"]
-
-    def get_or_request_fingerprint(self):
-        if self.fingerprint is None:
-            self.request_fingerprint()
-        return self.fingerprint
-
-    def log_in(self, email, password):
-        r = self.post("auth/login", json={
-            "email": email,
-            "password": password,
-        }, allow_errors={400})
-        # Returns form errors if invalid; {"token": "..."} otherwise
-        return (r.ok, r.json())
-
-    def register(self, username, password, email, captcha_key=None,
-                 invite=None):
-        headers = {"Referer": "https://discordapp.com/register"}
-        r = self.post("auth/register", json={
-            "fingerprint": self.get_or_request_fingerprint(),
-            "email": email,
-            "username": username,
-            "password": password,
-            "invite": invite,
-            "captcha_key": captcha_key,
-        }, headers=headers, allow_errors={400}, browser=True)
-        # Returns form errors if invalid; {"token": "..."} otherwise
-        return (r.ok, r.json())
-
-    def verify_email(self, token, captcha_key=None):
-        headers = {"Referer": "https://discordapp.com/verify?token=" + token}
-        r = self.post("auth/verify", json={
-            "token": token,
-            "captcha_key": captcha_key,
-        }, headers=headers, allow_errors={400}, browser=True)
-        # Returns form errors if invalid; {"token": "..."} otherwise
-        return (r.ok, r.json())
-
-    def resend_verification_email(self):
-        r = self.post("auth/verify/resend", auth=True)
-        return (r.ok, None)
-
-    def get_account_details(self):
-        r = self.get("users/@me", auth=True)
-        return (r.ok, r.json())
-
-    def set_account_details(
-            self, username, email, avatar, password, new_password=None):
-        r = self.patch("users/@me", auth=True, json={
-            "username": username,
-            "email": email,
-            "avatar": avatar,
-            "password": password,
-            "new_password": new_password,
-        }, allow_errors={400})
-        # Returns form errors if invalid; new account details otherwise
-        return (r.ok, r.json())
-
-    def get_settings(self):
-        r = self.get("users/@me/settings", auth=True)
-        return (r.ok, r.json())
-
-    def set_settings(
-            self, explicit_filter, allow_dms, friend_all, friend_mutual,
-            friend_mutual_guild):
-        settings = {}
-        if explicit_filter is not None:
-            if not (0 <= explicit_filter <= 2):
-                raise ValueError("Explicit filter must be from 0 to 2.")
-            settings["explicit_content_filter"] = explicit_filter
-        if allow_dms is not None:
-            settings["default_guilds_restricted"] = not allow_dms
-        if not (friend_all is friend_mutual is friend_mutual_guild):
-            friend_all = friend_all and friend_mutual and friend_mutual_guild
-            settings["friend_source_flags"] = {
-                "all": bool(friend_all),
-                "mutual_friends": bool(friend_mutual),
-                "mutual_guilds": bool(friend_mutual_guild),
-            }
-
-        r = self.patch("users/@me/settings", auth=True, json=settings)
-        # Returns form errors if invalid; new settings otherwise
-        return (r.ok, r.json())
-
-
 class InteractiveDiscord:
     def __init__(self, discord=None, debug=False):
         self.dc = discord
@@ -294,7 +96,7 @@ class InteractiveDiscord:
             self.dc = Discord(browser_ua, super_properties, debug=debug)
 
     def ensure_auth(self):
-        if not self.dc.token:
+        if not self.dc.logged_in:
             print("You are not logged in.")
             return False
         return True
@@ -384,28 +186,61 @@ class InteractiveDiscord:
                 traceback.print_exc()
                 print(file=sys.stderr)
                 answer = input("Try another captcha? [y/N] ")
-                if not answer.lower().startswith("y"):
+                if not answer[:1].lower() == "y":
                     print("CAPTCHA challenge failed.")
                     return None
                 continue
             print("Successfully solved the CAPTCHA challenge.")
             return token
 
+    def try_with_captcha(self, error_message, func, *args, **kwargs):
+        success, response = func(*args, **kwargs)
+        if success:
+            return True, response
+
+        if "captcha_key" not in response:
+            print_errors("{} Errors:".format(error_message))
+            return False, response
+
+        captcha_key = self.get_captcha_key()
+        print()
+        if captcha_key is None:
+            print(error_message)
+            return False, response
+
+        success, response = func(*args, **kwargs)
+        if not success:
+            print_errors("{} Errors:".format(error_message))
+            return False, response
+        return True, response
+
     def log_in(self):
         if self.dc.token:
             print("Note: You are already logged in.")
             answer = input("Continue with the login process? [y/N] ")
-            if not answer.lower.startswith("y"):
+            if not answer[:1].lower() == "y":
                 return False
 
         email = input("Email address: ")
         password = getpass()
         success, response = self.dc.log_in(email, password)
-        if not success:
+
+        if not success and "captcha_key" not in response:
             print_errors(response, "Login failed. Errors:")
             return False
 
-        self.dc.token = response["token"]
+        if not success:
+            captcha_key = self.get_captcha_key()
+            print()
+            if captcha_key is None:
+                print("Login failed.")
+                return False
+
+            success, response = self.dc.log_in(email, password, captcha_key)
+            if not success:
+                print_errors(response, "Login failed. Errors:")
+                return False
+
         print("You are now logged in.")
         return True
 
@@ -414,7 +249,7 @@ class InteractiveDiscord:
             print("You are already logged out.")
             return False
 
-        self.dc.token = None
+        self.dc.log_out()
         print("You are now logged out.")
         return True
 
@@ -546,7 +381,7 @@ class InteractiveDiscord:
         new_password = None
 
         answer = input("Change password? [y/N] ")
-        if answer.lower().startswith("y"):
+        if answer[:1].lower() == "y":
             while True:
                 new_password = getpass("New password: ")
                 new_password2 = getpass("New password (again): ")
@@ -555,11 +390,11 @@ class InteractiveDiscord:
                 print("Passwords do not match.")
 
         answer = input("Change email address? [y/N] ")
-        if answer.lower().startswith("y"):
+        if answer[:1].lower() == "y":
             email = input("New email address: ")
 
         answer = input("Change avatar? [y/N] ")
-        if answer.lower().startswith("y"):
+        if answer[:1].lower() == "y":
             while True:
                 avatar_path = input("Path to new avatar image: ")
                 avatar_path = os.path.expanduser(avatar_path)
@@ -619,7 +454,7 @@ class InteractiveDiscord:
         friend_mutual_guild = None
 
         answer = input("Change explicit message filter? [y/N] ")
-        if answer.lower().startswith("y"):
+        if answer[:1].lower() == "y":
             print("Options:")
             print("[0] Don't scan messages from anyone.")
             print("[1] Scan messages from everyone except friends.")
@@ -634,18 +469,18 @@ class InteractiveDiscord:
             explicit_filter = choice
 
         answer = input("Change default direct message policy? [y/N] ")
-        if answer.lower().startswith("y"):
+        if answer[:1].lower() == "y":
             answer = input("Allow DMs from members of new servers? [y/N] ")
-            allow_dms = answer.lower().startswith("y")
+            allow_dms = answer[:1].lower() == "y"
 
         answer = input("Change who can add you as a friend? [y/N] ")
-        if answer.lower().startswith("y"):
+        if answer[:1].lower() == "y":
             answer = input("Allow friends of friends to add you? [y/N] ")
-            friend_mutual = answer.lower().startswith("y")
+            friend_mutual = answer[:1].lower() == "y"
             answer = input("Allow server members to add you? [y/N] ")
-            friend_mutual_guild = answer.lower().startswith("y")
+            friend_mutual_guild = answer[:1].lower() == "y"
             answer = input("Allow everyone to add you? [y/N] ")
-            friend_all = answer.lower().startswith("y")
+            friend_all = answer[:1].lower() == "y"
 
         success, response = self.dc.set_settings(
             explicit_filter=explicit_filter, allow_dms=allow_dms,

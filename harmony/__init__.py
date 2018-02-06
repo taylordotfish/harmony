@@ -16,3 +16,5 @@
 # along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
 
 from . import harmony
+
+assert harmony
