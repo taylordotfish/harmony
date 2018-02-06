@@ -32,6 +32,18 @@ def get_full_url(url):
     return BASE_URL.rstrip("/") + "/" + url
 
 
+def patch_json_method(response):
+    old_json = response.json
+
+    def json(default=dict, **kwargs):
+        if not response.text:
+            return None if default is None else default()
+        return old_json(**kwargs)
+
+    response.json = json
+    return response
+
+
 class Discord:
     def __init__(self, browser_user_agent, super_properties,
                  user_agent=USER_AGENT, debug=False):
@@ -86,6 +98,9 @@ class Discord:
         if "data" in kwargs:
             data = kwargs["data"]
             self.debug("[http] [{}] [data] {!r}".format(method, data))
+        if "json" in kwargs:
+            json_data = kwargs["json"]
+            self.debug("[http] [{}] [json] {!r}".format(method, json_data))
         self.debug("[http] [{}] [status code] {}".format(
             method, r.status_code,
         ))
@@ -112,7 +127,7 @@ class Discord:
 
             e.args = tuple(args)
             raise e
-        return r
+        return patch_json_method(r)
 
     def get(self, *args, **kwargs):
         return self.http_request(requests.get, *args, **kwargs)
