@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.2.2
+Version 0.3.0
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service [Discord]. Currently, it allows you to:
@@ -73,6 +73,17 @@ Dependencies
 [Pillow]: https://pypi.python.org/pypi/Pillow/
 [requests]: https://pypi.python.org/pypi/requests/
 [slimit]: https://pypi.python.org/pypi/slimit/
+
+
+What’s new
+----------
+
+Version 0.3.0:
+
+* Login attempts that require CAPTCHA tokens are now supported.
+* The verification process when logging in from a new location is now
+  supported.
+* Fixed some miscellaneous bugs.
 
 
 License
