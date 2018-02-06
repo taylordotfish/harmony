@@ -32,7 +32,7 @@ import re
 import sys
 import traceback
 
-assert __version__
+assert __version__  # Silence Pyflakes
 
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
 RECAPTCHA_SITE_URL = "https://discordapp.com:443"
@@ -45,6 +45,7 @@ Commands:
   log-out       Log out.
   register      Register a new account.
   verify        Verify your email address.
+  authorize-ip  Authorize a new login location.
   resend        Resend the verification email.
   tag           Get your account tag.
   get-details   Get your current account details.
@@ -84,7 +85,7 @@ def print_errors(response, message=None, file=sys.stdout):
     for i, (name, errors) in enumerate(response.items()):
         print(" " * 4 + "{}:".format(name), file=file)
         for error in errors:
-            print(" " * 8 + error, file=file)
+            print(" " * 8 + str(error), file=file)
 
 
 class InteractiveDiscord:
@@ -201,7 +202,7 @@ class InteractiveDiscord:
 
         if "captcha_key" not in response:
             if error_message is not None:
-                print_errors("{} Errors:".format(error_message))
+                print_errors(response, "{} Errors:".format(error_message))
             return False, response
 
         captcha_key = self.get_captcha_key()
@@ -211,10 +212,10 @@ class InteractiveDiscord:
                 print(error_message)
             return False, response
 
-        success, response = func(*args, **kwargs)
+        success, response = func(*args, captcha_key=captcha_key, **kwargs)
         if not success:
             if error_message is not None:
-                print_errors("{} Errors:".format(error_message))
+                print_errors(response, "{} Errors:".format(error_message))
             return False, response
         return True, response
 
