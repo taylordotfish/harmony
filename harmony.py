@@ -23,12 +23,21 @@ import sys
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 LIBRECAPTCHA_DIR = os.path.join(SCRIPT_DIR, "librecaptcha")
 
+
+def download_librecaptcha():
+    try:
+        if os.listdir(LIBRECAPTCHA_DIR):
+            return
+    except FileNotFoundError:
+        pass
+    subprocess.check_call([
+        "git", "-C", SCRIPT_DIR, "submodule", "update", "--init",
+    ])
+
+
 if __name__ == "__main__":
     sys.path.insert(0, LIBRECAPTCHA_DIR)
-    if not os.path.exists(LIBRECAPTCHA_DIR):
-        subprocess.check_call([
-            "git", "-C", SCRIPT_DIR, "submodule", "update", "--init",
-        ])
+    download_librecaptcha()
 
 from harmony import *
 from harmony.__main__ import main
