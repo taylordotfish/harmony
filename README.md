@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.3.0
+Version 0.3.1
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service [Discord]. Currently, it allows you to:
@@ -77,6 +77,10 @@ Dependencies
 
 What’s new
 ----------
+
+Version 0.3.1:
+
+* Fixed automatic librecaptcha downloading in harmony.py.
 
 Version 0.3.0:
 
