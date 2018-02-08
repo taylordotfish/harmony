@@ -22,7 +22,7 @@ import base64
 import json
 import sys
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 BASE_URL = "https://discordapp.com/api/v6/"
 PROJECT_URL = "https://github.com/taylordotfish/harmony"
 USER_AGENT = "DiscordBot ({}, {})".format(PROJECT_URL, __version__)
