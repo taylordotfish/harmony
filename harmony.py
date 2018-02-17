@@ -24,6 +24,17 @@ SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 LIBRECAPTCHA_DIR = os.path.join(SCRIPT_DIR, "librecaptcha")
 
 
+def import_librecaptcha():
+    try:
+        import librecaptcha
+    except ModuleNotFoundError:
+        if os.path.isdir(os.path.join(SCRIPT_DIR, '.git')):
+            sys.path.insert(0, LIBRECAPTCHA_DIR)
+            download_librecaptcha()
+        else:
+            raise
+
+
 def download_librecaptcha():
     try:
         if os.listdir(LIBRECAPTCHA_DIR):
@@ -36,7 +47,6 @@ def download_librecaptcha():
 
 
 if __name__ == "__main__":
-    sys.path.insert(0, LIBRECAPTCHA_DIR)
-    download_librecaptcha()
+    import_librecaptcha()
     from harmony.__main__ import main
     main()
