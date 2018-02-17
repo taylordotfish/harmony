@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.3.1
+Version 0.4.0
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service [Discord]. Currently, it allows you to:
@@ -11,11 +11,20 @@ the messaging service [Discord]. Currently, it allows you to:
 * View your account tag
 * Change your username, email address, password, and avatar
 * Change safety and privacy settings
+* List servers you’re in and members in those servers
+* Transfer and delete servers you own
+* Accept server invites
+* Delete your account
+
+Actions that require you to complete a CAPTCHA (often required when logging in
+from a new location, for example) are automatically supported by using
+[librecaptcha].
 
 For free/libre software that allows you to send and receive messages with
 Discord, check out [purple-discord].
 
 [Discord]: https://en.wikipedia.org/wiki/Discord_(software)
+[librecaptcha]: https://github.com/nickolas360/librecaptcha
 [purple-discord]: https://github.com/EionRobb/purple-discord
 
 
@@ -78,12 +87,25 @@ Dependencies
 What’s new
 ----------
 
-Version 0.3.1:
+Version 0.4.0:
+
+* You can now list servers you’re in with the ``servers`` command.
+* You can now list members in a server with the ``members``.
+* You can now display and accept invites with the ``show-invite`` command.
+* You can now transfer servers with the ``transfer`` command.
+* You can now delete servers with the ``rm-server`` command.
+* You can now delete your account with the ``delete`` command.
+* You can now undelete an account scheduled for deletion with the ``undelete``
+  command.
+* The ``get-details`` and ``get-settings`` commands now provide more
+  information.
+* Updated the user-agent list.
+* Fixed some miscellaneous bugs.
+* Improved separation between the frontend and backend.
+
+Version 0.3.x:
 
 * Fixed automatic librecaptcha downloading in harmony.py.
-
-Version 0.3.0:
-
 * Login attempts that require CAPTCHA tokens are now supported.
 * The verification process when logging in from a new location is now
   supported.

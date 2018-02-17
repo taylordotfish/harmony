@@ -1,4 +1,4 @@
-# Copyright (C) 2017 nickolas360 <contact@nickolas360.com>
+# Copyright (C) 2017-2018 nickolas360 <contact@nickolas360.com>
 #
 # This file is part of Harmony.
 #
@@ -15,6 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import harmony
+from . import harmony, discord
+from .harmony import __version__
+from .__main__ import main
 
-assert harmony
+# Silence Pyflakes
+assert [harmony, discord]
+assert [__version__]
+assert [main]

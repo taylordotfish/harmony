@@ -1,4 +1,4 @@
-# Copyright (C) 2017 nickolas360 <contact@nickolas360.com>
+# Copyright (C) 2017-2018 nickolas360 <contact@nickolas360.com>
 #
 # This file is part of Harmony.
 #
@@ -21,83 +21,53 @@ import random
 USER_AGENTS = [
     (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, "
-        "like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-        {"os": "Windows", "browser": "Chrome", "device": ""},
+        "like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+        {"os": "Windows", "browser": "Chrome", "device": ""}
     ),
     (
         "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, "
-        "like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-        {"os": "Windows", "browser": "Chrome", "device": ""},
+        "like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+        {"os": "Windows", "browser": "Chrome", "device": ""}
     ),
     (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-        {"os": "Mac OS X", "browser": "Chrome", "device": ""},
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+        {"os": "Mac OS X", "browser": "Chrome", "device": ""}
     ),
     (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 "
-        "(KHTML, like Gecko) Version/10.1.1 Safari/603.2.4",
-        {"os": "Mac OS X", "browser": "Safari", "device": ""},
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 "
+        "Firefox/57.0",
+        {"os": "Windows", "browser": "Firefox", "device": ""}
     ),
     (
-        "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:53.0) Gecko/20100101 "
-        "Firefox/53.0",
-        {"os": "Windows", "browser": "Firefox", "device": ""},
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+        {"os": "Mac OS X", "browser": "Chrome", "device": ""}
     ),
     (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-        {"os": "Mac OS X", "browser": "Chrome", "device": ""},
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/604.4.7 "
+        "(KHTML, like Gecko) Version/11.0.2 Safari/604.4.7",
+        {"os": "Mac OS X", "browser": "Safari", "device": ""}
+    ),
+    (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 "
+        "Firefox/58.0",
+        {"os": "Windows", "browser": "Firefox", "device": ""}
     ),
     (
         "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, "
-        "like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-        {"os": "Windows", "browser": "Chrome", "device": ""},
-    ),
-    (
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0) Gecko/20100101 "
-        "Firefox/53.0",
-        {"os": "Windows", "browser": "Firefox", "device": ""},
-    ),
-    (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-        {"os": "Mac OS X", "browser": "Chrome", "device": ""},
-    ),
-    (
-        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/58.0.3029.110 Safari/537.36",
-        {"os": "Windows", "browser": "Chrome", "device": ""},
-    ),
-    (
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like "
-        "Gecko",
-        {"os": "Windows", "browser": "Internet Explorer", "device": ""},
-    ),
-    (
-        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:53.0) Gecko/20100101 "
-        "Firefox/53.0",
-        {"os": "Linux", "browser": "Firefox", "device": ""},
-    ),
-    (
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like "
-        "Gecko) Chrome/58.0.3029.110 Safari/537.36",
-        {"os": "Linux", "browser": "Chrome", "device": ""},
-    ),
-    (
-        "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 "
-        "Firefox/54.0",
-        {"os": "Windows", "browser": "Firefox", "device": ""},
+        "like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+        {"os": "Windows", "browser": "Chrome", "device": ""}
     ),
     (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, "
-        "like Gecko) Chrome/59.0.3071.86 Safari/537.36",
-        {"os": "Windows", "browser": "Chrome", "device": ""},
+        "like Gecko) Chrome/64.0.3282.140 Safari/537.36",
+        {"os": "Windows", "browser": "Chrome", "device": ""}
     ),
     (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:53.0) "
-        "Gecko/20100101 Firefox/53.0",
-        {"os": "Mac OS X", "browser": "Firefox", "device": ""},
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like "
+        "Gecko) Chrome/63.0.3239.132 Safari/537.36",
+        {"os": "Linux", "browser": "Chrome", "device": ""}
     ),
 ]
 
