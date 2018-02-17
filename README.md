@@ -90,7 +90,7 @@ What’s new
 Version 0.4.0:
 
 * You can now list servers you’re in with the ``servers`` command.
-* You can now list members in a server with the ``members``.
+* You can now list members in a server with the ``members`` command.
 * You can now display and accept invites with the ``show-invite`` command.
 * You can now transfer servers with the ``transfer`` command.
 * You can now delete servers with the ``rm-server`` command.
