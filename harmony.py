@@ -38,9 +38,5 @@ def download_librecaptcha():
 if __name__ == "__main__":
     sys.path.insert(0, LIBRECAPTCHA_DIR)
     download_librecaptcha()
-
-from harmony import *
-from harmony.__main__ import main
-
-if __name__ == "__main__":
+    from harmony.__main__ import main
     main()
