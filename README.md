@@ -87,6 +87,13 @@ Dependencies
 What’s new
 ----------
 
+Version 0.4.1:
+
+* [librecaptcha] is now loaded from Python’s default path if available;
+  otherwise, the corresponding submodule is cloned.
+
+[librecaptcha]: https://github.com/nickolas360/librecaptcha
+
 Version 0.4.0:
 
 * You can now list servers you’re in with the ``servers`` command.
