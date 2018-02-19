@@ -28,7 +28,7 @@ DESC_REPLACEMENTS = {
 
 
 def long_description():
-    with open(os.path.join(SCRIPT_DIR, "README.rst")) as f:
+    with open(os.path.join(SCRIPT_DIR, "README.rst"), encoding='utf-8') as f:
         lines = f.read().splitlines()
     result = []
     for line in lines:
