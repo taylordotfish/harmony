@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.5.1-dev
+Version 0.5.1
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service `Discord`_. Currently, it allows you to:
@@ -91,6 +91,10 @@ For better text editing support, install `rlwrap`_ and run
 
 What’s new
 ----------
+
+Version 0.5.1:
+
+* Fixed possible encoding issue in ``setup.py``.
 
 Version 0.5.0:
 

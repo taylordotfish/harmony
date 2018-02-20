@@ -38,7 +38,7 @@ def long_description():
 
 setup(
     name="harmony-discord",
-    version="0.5.1-dev",
+    version="0.5.1",
     description=(
         "A free/libre program for performing various tasks with Discord."
     ),
