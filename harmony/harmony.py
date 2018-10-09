@@ -56,6 +56,7 @@ Commands:
   undelete      Undelete an account marked for deletion.
   show-invite   Show and optionally accept a server invite.
   servers       List the servers you're in.
+  leave-server  Leave a server.
   members       List the members of a server.
   transfer      Transfer a server to another user.
   rm-server     Delete a server.
@@ -207,6 +208,7 @@ class InteractiveDiscord:
             "undelete": self.undelete,
             "show-invite": self.show_invite,
             "servers": self.servers,
+            "leave-server": self.leave_server,
             "members": self.server_members,
             "transfer": self.transfer_server,
             "rm-server": self.delete_server,
@@ -620,6 +622,22 @@ class InteractiveDiscord:
         print(prefix + "Members in this server:")
         for member in members_resp.members:
             print("  {} [ID: {}]".format(member.tag, member.id))
+
+    @needs_auth
+    def leave_server(self):
+        if not self.print_servers(owned=False):
+            return
+        server_id = input_nb("\nEnter the ID of the server to leave: ")
+
+        details = self.try_or_error(
+            "Could not get server details.", self.dc.server_details, server_id)
+        print('You are about to leave the server "{}".'.format(details.name))
+        if not ask_yn("Are you sure you want to leave this server?"):
+            return
+
+        self.try_or_error(
+            "Could not leave server.", self.dc.leave_server, server_id)
+        print("Left server.")
 
     @needs_auth
     def server_members(self):

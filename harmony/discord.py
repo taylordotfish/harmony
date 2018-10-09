@@ -562,6 +562,11 @@ class Discord:
         resp = ServerDetailsResponse(r)
         return resp
 
+    def leave_server(self, server_id):
+        r = self.delete("users/@me/guilds/{}".format(server_id), auth=True)
+        resp = GenericResponse(r)
+        return resp
+
     def server_members(self, server_id, limit=1000):
         r = self.get(
             "guilds/{}/members?limit={}".format(server_id, limit), auth=True)
