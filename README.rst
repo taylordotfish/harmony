@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.6.0
+Version 0.6.1-dev
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service `Discord`_. Currently, it allows you to:
@@ -88,6 +88,9 @@ What’s new
 ----------
 
 Version 0.6.0:
+
+* Fixed registration.
+* The librecaptcha GUI is now used when available.
 
 Version 0.5.x:
 

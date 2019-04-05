@@ -35,7 +35,7 @@ import re
 import sys
 import traceback
 
-__version__ = "0.6.0"
+__version__ = "0.6.1-dev"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
 RECAPTCHA_SITE_URL = "https://discordapp.com"
 
