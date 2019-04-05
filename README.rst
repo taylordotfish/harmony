@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.5.2-dev
+Version 0.6.0
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service `Discord`_. Currently, it allows you to:
@@ -54,12 +54,8 @@ Then install with `pip`_::
 
     sudo pip3 install .
 
-Alternatively, you can run::
+To install locally, run without ``sudo`` and add the ``--user`` option.
 
-    sudo ./setup.py install
-
-With either command, to install locally, run without ``sudo`` and add the
-``--user`` option.
 
 Run without installing
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -69,8 +65,7 @@ Then, install the required dependencies by running::
 
     sudo pip3 install -r requirements.txt
 
-To install the dependencies locally, run without ``sudo`` and add the
-``--user`` option.
+To install the dependencies locally, run without ``sudo`` and add ``--user``.
 
 .. _pip: https://pip.pypa.io
 .. _Git: https://git-scm.com
@@ -92,14 +87,13 @@ For better text editing support, install `rlwrap`_ and run
 What’s new
 ----------
 
-Version 0.5.1:
+Version 0.6.0:
 
-* Fixed possible encoding issue in ``setup.py``.
-
-Version 0.5.0:
+Version 0.5.x:
 
 * Harmony can now be installed from PyPI, or from the Git repository with pip
   or ``setup.py``.
+* Fixed possible encoding issue in ``setup.py``.
 
 Version 0.4.x:
 
@@ -131,18 +125,18 @@ Version 0.3.x:
 Dependencies
 ------------
 
-* `Python`_ ≥ 3.4
+* `Python`_ ≥ 3.5
 * The following Python packages (the installation instructions above handle
   installing these):
 
   - `Pillow`_ ≥ 4.1.1
   - `requests`_ ≥ 2.18.1
-  - `librecaptcha <librecaptcha-pkg_>`_ ≥ 0.3.0
+  - `librecaptcha[gtk] <librecaptcha-pkg_>`_ ≥ 0.6.0
 
 .. _Python: https://www.python.org/
-.. _Pillow: https://pypi.python.org/pypi/Pillow/
-.. _requests: https://pypi.python.org/pypi/requests/
-.. _librecaptcha-pkg: https://pypi.python.org/pypi/librecaptcha/
+.. _Pillow: https://pypi.org/project/Pillow/
+.. _requests: https://pypi.org/project/requests/
+.. _librecaptcha-pkg: https://pypi.org/project/librecaptcha/
 
 
 License
