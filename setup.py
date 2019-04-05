@@ -23,7 +23,7 @@ SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 REPO_URL = "https://github.com/taylordotfish/harmony"
 DESC_REPLACEMENTS = {
     ".. _LICENSE: LICENSE":
-        ".. _LICENSE: {}/blob/master/LICENSE".format(REPO_URL),
+    ".. _LICENSE: {}/blob/master/LICENSE".format(REPO_URL),
 }
 
 
@@ -34,6 +34,11 @@ def long_description():
     for line in lines:
         result.append(DESC_REPLACEMENTS.get(line, line) + "\n")
     return "".join(result)
+
+
+LICENSE = """\
+License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)\
+"""
 
 
 setup(
@@ -49,14 +54,12 @@ setup(
     license="GNU General Public License v3 or later (GPLv3+)",
     classifiers=[
         "Development Status :: 4 - Beta",
-        "Topic :: Internet",
-        "License :: OSI Approved :: "
-        "GNU General Public License v3 or later (GPLv3+)",
+        "Topic :: Internet", LICENSE,
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
     ],
     keywords="discord",
     packages=["harmony"],
@@ -68,6 +71,6 @@ setup(
     install_requires=[
         "Pillow>=4.1.1",
         "requests>=2.18.1",
-        "librecaptcha>=0.3.0",
+        "librecaptcha[gtk]>=0.6.0",
     ],
 )

@@ -15,21 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
 
-from .harmony import InteractiveDiscord, __version__
+from .harmony import DiscordCli, __version__
 import sys
 
-
-def usage(exit=True):
-    print("Usage:", file=sys.stderr)
-    print("  harmony.py [--debug]", file=sys.stderr)
-    print("  harmony.py -h | --help | --version", file=sys.stderr)
-    if exit:
-        sys.exit(1)
+USAGE = """\
+Usage:
+  harmony.py [--debug]
+  harmony.py -h | --help | --version
+"""
 
 
 def main():
     args = sys.argv[1:]
-    if len(args) == 1 and args[0] == "--version":
+    if "-h" in args or "--help" in args:
+        print(USAGE, end="")
+        return
+
+    if "--version" in args:
         print(__version__)
         return
 
@@ -40,9 +42,11 @@ def main():
         debug = False
 
     if args:
-        usage()
-    interactive = InteractiveDiscord(debug=debug)
-    interactive.command_loop()
+        print(USAGE, file=sys.stderr, end="")
+        sys.exit(1)
+
+    cli = DiscordCli(debug=debug)
+    cli.command_loop()
 
 
 if __name__ == "__main__":

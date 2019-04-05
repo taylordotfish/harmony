@@ -16,41 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
 
-import importlib
-import os
-import subprocess
-import sys
+from harmony.__main__ import main
+import os.path
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 LIBRECAPTCHA_DIR = os.path.join(SCRIPT_DIR, "librecaptcha")
 
-
-def import_librecaptcha():
-    try:
-        import librecaptcha.__init__
-    except ModuleNotFoundError:
-        if not os.path.isdir(os.path.join(SCRIPT_DIR, ".git")):
-            raise
-        sys.path.insert(0, LIBRECAPTCHA_DIR)
-        download_librecaptcha()
-        import librecaptcha
-        # librecaptcha is likely a namespace package right now, so
-        # we need to reload it.
-        importlib.reload(librecaptcha)
-
-
-def download_librecaptcha():
-    try:
-        if os.listdir(LIBRECAPTCHA_DIR):
-            return
-    except FileNotFoundError:
-        pass
-    subprocess.check_call([
-        "git", "-C", SCRIPT_DIR, "submodule", "update", "--init",
-    ])
-
-
 if __name__ == "__main__":
-    import_librecaptcha()
-    from harmony.__main__ import main
     main()

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 taylor.fish <contact@taylor.fish>
+# Copyright (C) 2017-2019 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
 #
@@ -25,6 +25,7 @@ import re
 import sys
 
 BASE_URL = "https://discordapp.com/api/v6/"
+CLIENT_BUILD_NUMBER = 35116
 
 
 class GenericResponse:
@@ -40,6 +41,15 @@ class GenericResponse:
     @property
     def needs_captcha(self):
         return not self.success and "captcha_key" in self.json
+
+    @property
+    def invalid_captcha(self):
+        if self.success:
+            return False
+        try:
+            return "incorrect-captcha-sol" in self.json["captcha_key"]
+        except (AttributeError, IndexError, KeyError, TypeError):
+            return False
 
     @property
     def ratelimited(self):
@@ -306,10 +316,15 @@ class Discord:
         self.super_properties = super_properties
         self._debug = debug
 
-        self.super_properties.setdefault("referrer", "")
-        self.super_properties.setdefault("referring_domain", "")
-        self.super_properties.setdefault("referrer_current", "")
-        self.super_properties.setdefault("referring_domain_current", "")
+        sprops = self.super_properties
+        sprops.setdefault("browser_user_agent", user_agent)
+        sprops.setdefault("referrer", "")
+        sprops.setdefault("referring_domain", "")
+        sprops.setdefault("referrer_current", "")
+        sprops.setdefault("referring_domain_current", "")
+        sprops.setdefault("release_channel", "stable")
+        sprops.setdefault("client_build_number", CLIENT_BUILD_NUMBER)
+        sprops.setdefault("client_event_source", None)
 
         self._token = None
         self.fingerprint = None
@@ -454,6 +469,7 @@ class Discord:
             "password": password,
             "invite": invite,
             "captcha_key": captcha_key,
+            "consent": True,
         }, referer="register?redirect=%2F")
 
         resp = ResponseWithToken(r)

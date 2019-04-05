@@ -1,3 +1,0 @@
-[submodule "librecaptcha"]
-	path = librecaptcha
-	url = https://github.com/taylordotfish/librecaptcha
