@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.6.1-dev
+Version 0.6.1
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service `Discord`_. Currently, it allows you to:
@@ -86,6 +86,10 @@ For better text editing support, install `rlwrap`_ and run
 
 What’s new
 ----------
+
+Version 0.6.1:
+
+* Harmony should now work again (as of 2021-02-04).
 
 Version 0.6.0:
 
