@@ -24,8 +24,8 @@ import json
 import re
 import sys
 
-BASE_URL = "https://discordapp.com/api/v6/"
-CLIENT_BUILD_NUMBER = 35116
+BASE_URL = "https://discordapp.com/api/v8/"
+CLIENT_BUILD_NUMBER = 75681
 
 
 class GenericResponse:
@@ -33,6 +33,7 @@ class GenericResponse:
         self.success = http_response.ok
         self.status_code = http_response.status_code
         self.json = http_response.json()
+        self.text = http_response.text
 
     @property
     def formatted_json(self):
@@ -80,12 +81,11 @@ class ResponseWithToken(GenericResponse):
 class LogInResponse(ResponseWithToken):
     @property
     def new_location(self):
-        if not isinstance(self.json.get("email"), list):
-            return False
-        return any(
-            re.search("new login location", error, re.I)
-            for error in self.json["email"]
-        )
+        return bool(re.search(
+            r"\b(account_login_verification_email|new login location)\b",
+            self.text,
+            re.I,
+        ))
 
     @property
     def deletion_scheduled(self):
@@ -446,11 +446,13 @@ class Discord:
 
     def log_in(self, email, password, captcha_key=None, undelete=False):
         r = self.post("auth/login", json={
-            "email": email,
+            "login": email,
             "password": password,
             "undelete": undelete,
             "captcha_key": captcha_key,
-        }, referer="login?redirect=%2F")
+            "login_source": None,
+            "gift_code_sku_id": None,
+        }, referer="login")
 
         resp = LogInResponse(r)
         if resp.success:
@@ -460,7 +462,7 @@ class Discord:
     def log_out(self):
         self.token = None
 
-    def register(self, username, password, email, captcha_key=None,
+    def register(self, username, password, email, birthday, captcha_key=None,
                  invite=None):
         r = self.post("auth/register", json={
             "fingerprint": self.get_or_request_fingerprint(),
@@ -468,9 +470,11 @@ class Discord:
             "username": username,
             "password": password,
             "invite": invite,
-            "captcha_key": captcha_key,
             "consent": True,
-        }, referer="register?redirect=%2F")
+            "date_of_birth": birthday,
+            "gift_code_sku_id": None,
+            "captcha_key": captcha_key,
+        }, referer="register")
 
         resp = ResponseWithToken(r)
         if resp.success:
@@ -495,7 +499,7 @@ class Discord:
         return resp
 
     def authorize_ip(self, token, captcha_key=None):
-        referer = "authorize-ip?token=" + token
+        referer = "authorize-ip"
         data = {"token": token}
         if captcha_key is not None:
             data["captcha_key"] = captcha_key

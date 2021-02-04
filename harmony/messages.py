@@ -44,5 +44,9 @@ https://discordapp.com/verify?token=<token>"
 ENTER_NEW_LOCATION_LINK = """\
 Enter the new location verification link you received by email.
 The email should contain a link that looks like this:
-https://discordapp.com/authorize-ip?token=<token>"
+https://discordapp.com/authorize-ip#token=<token>"
+
+If the link in the email starts with "https://click.discord.com"
+instead, visit that link in your browser with JavaScript disabled.
+It should redirect to a link that looks like the one above.
 """

@@ -37,7 +37,7 @@ import traceback
 
 __version__ = "0.6.1-dev"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
-RECAPTCHA_SITE_URL = "https://discordapp.com"
+RECAPTCHA_SITE_URL = "https://discord.com"
 
 INTERACTIVE_HELP = """\
 Commands:
@@ -270,7 +270,7 @@ class DiscordCli:
         except discord.RequestError as e:
             return e.response
 
-    def try_or_error(self, error_message, func, *args, throw=True):
+    def try_or_error(self, error_message, func, *, throw=True):
         response = self.try_request(func)
         self.handle_response(error_message, response, throw=throw)
         return response
@@ -319,7 +319,9 @@ class DiscordCli:
                 print(error_message)
             return response
         return self.try_or_error(
-            error_message, lambda: func(captcha_key), throw=throw,
+            error_message,
+            lambda: func(captcha_key),
+            throw=throw,
         )
 
     def try_with_captcha(self, *args, **kwargs):
@@ -368,6 +370,12 @@ class DiscordCli:
         username = input_nb("Username: ")
 
         while True:
+            birthday = input_nb("Date of birth (YYYY-MM-DD): ")
+            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", birthday):
+                break
+            print("Invalid format for date of birth.")
+
+        while True:
             password = getpass()
             password2 = getpass("Password (again): ")
             if password == password2:
@@ -378,7 +386,7 @@ class DiscordCli:
         self.try_with_captcha(
             "Registration failed.", lambda key: self.dc.register(
                 email=email, username=username, password=password,
-                captcha_key=key,
+                birthday=birthday, captcha_key=key,
             ),
         )
         print(messages.SUCCESSFUL_REGISTRATION, end="")
@@ -412,7 +420,7 @@ class DiscordCli:
     def authorize_ip(self):
         print(messages.ENTER_NEW_LOCATION_LINK, end="")
         link = input_nb("Enter the link: ")
-        match = re.search(r"token=([A-Za-z0-9_\.\-\+]+)", link)
+        match = re.search(r"\btoken=([A-Za-z0-9_\.\-\+]+)", link)
         if match is None:
             print("Could not extract token from link.")
             raise CommandFailure
@@ -427,8 +435,8 @@ class DiscordCli:
     @needs_auth
     def get_tag(self):
         response = self.try_or_error(
-            "Could not get account tag.", self.dc.get_account_details,
-            cached=True,
+            "Could not get account tag.",
+            lambda: self.dc.get_account_details(cached=True),
         )
         print(response.tag)
 
@@ -481,8 +489,11 @@ class DiscordCli:
 
         password = getpass("Current password: ")
         response = self.try_or_error(
-            "Account update failed.", self.dc.set_account_details,
-            params=params, password=password,
+            "Account update failed.",
+            lambda: self.dc.set_account_details(
+                params=params,
+                password=password,
+            ),
         )
 
         print("Account details updated.")
@@ -539,7 +550,8 @@ class DiscordCli:
                 params.friend_policy |= FriendPolicy.ALL
 
         self.try_or_error(
-            "Settings update failed.", self.dc.set_settings, params,
+            "Settings update failed.",
+            lambda: self.dc.set_settings(params),
         )
         print("Settings updated.")
 
@@ -549,7 +561,8 @@ class DiscordCli:
             return False
         password = getpass("Account password: ")
         response = self.try_or_error(
-            "Account deletion failed.", self.dc.delete_account, password,
+            "Account deletion failed.",
+            lambda: self.dc.delete_account(password),
             throw=False,
         )
 
@@ -578,7 +591,8 @@ class DiscordCli:
             return False
         invite_id = match.group(1)
         invite = self.try_or_error(
-            "Could not get invite details.", self.dc.invite_details, invite_id,
+            "Could not get invite details.",
+            self.dc.invite_details(invite_id),
         )
 
         print('\n{} has invited you to join the server "{}".'.format(
@@ -591,7 +605,8 @@ class DiscordCli:
         if not ask_yn("Accept invite?"):
             return
         self.try_or_error(
-            "Could not accept invite.", self.dc.accept_invite, invite_id,
+            "Could not accept invite.",
+            lambda: self.dc.accept_invite(invite_id),
         )
         print("Invite accepted.")
 
@@ -643,13 +658,15 @@ class DiscordCli:
             return
         server_id = input_nb("\nEnter the ID of the server to leave: ")
         details = self.try_or_error(
-            "Could not get server details.", self.dc.server_details, server_id,
+            "Could not get server details.",
+            lambda: self.dc.server_details(server_id),
         )
         print('You are about to leave the server "{}".'.format(details.name))
         if not ask_yn("Are you sure you want to leave this server?"):
             return
         self.try_or_error(
-            "Could not leave server.", self.dc.leave_server, server_id,
+            "Could not leave server.",
+            lambda: self.dc.leave_server(server_id),
         )
         print("Left server.")
 
@@ -668,8 +685,8 @@ class DiscordCli:
         self.print_members(server_id, prefix="\n")
         owner_id = input_nb("\nEnter the ID of the new server owner: ")
         self.try_or_error(
-            "Could not transfer server.", self.dc.transfer_server,
-            server_id, owner_id,
+            "Could not transfer server.",
+            lambda: self.dc.transfer_server(server_id, owner_id),
         )
         print("Server transferred.")
 
@@ -679,13 +696,15 @@ class DiscordCli:
             return
         server_id = input_nb("\nEnter the ID of the server to delete: ")
         details = self.try_or_error(
-            "Could not get server details.", self.dc.server_details, server_id,
+            "Could not get server details.",
+            lambda: self.dc.server_details(server_id),
         )
         print('You are about to delete the server "{}".'.format(details.name))
         if not ask_yn("Are you sure you want to delete this server?"):
             return
         self.try_or_error(
-            "Could not delete server.", self.dc.delete_server, server_id,
+            "Could not delete server.",
+            lambda: self.dc.delete_server(server_id),
         )
         print("Server deleted.")
 
