@@ -70,7 +70,7 @@ setup(
     },
     install_requires=[
         "Pillow>=4.1.1",
-        "requests>=2.18.1",
-        "librecaptcha[gtk]>=0.6.0",
+        "requests>=2.18.1,<3",
+        "librecaptcha[gtk]>=0.6.0,<0.7",
     ],
 )
