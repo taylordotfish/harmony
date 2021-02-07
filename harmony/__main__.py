@@ -16,6 +16,8 @@
 # along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
 
 from .harmony import DiscordCli, __version__
+import os.path
+import readline
 import sys
 
 USAGE = """\
@@ -46,7 +48,18 @@ def main():
         sys.exit(1)
 
     cli = DiscordCli(debug=debug)
-    cli.command_loop()
+    readline.set_auto_history(True)
+    history_path = os.path.join(os.path.expanduser("~"), ".harmony_history")
+
+    try:
+        readline.read_history_file(history_path)
+    except FileNotFoundError:
+        pass
+
+    try:
+        cli.command_loop()
+    finally:
+        readline.write_history_file(history_path)
 
 
 if __name__ == "__main__":

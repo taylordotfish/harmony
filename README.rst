@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.6.1
+Version 0.6.2
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service `Discord`_. Currently, it allows you to:
@@ -78,14 +78,13 @@ If you installed Harmony, simply run ``harmony``, or see ``harmony -h`` for
 more options. If you didn’t install it, use ``./harmony.py`` instead of
 ``harmony``.
 
-For better text editing support, install `rlwrap`_ and run
-``rlwrap harmony`` or ``rlwrap ./harmony.py``.
-
-.. _rlwrap: https://github.com/hanslub42/rlwrap
-
 
 What’s new
 ----------
+
+Version 0.6.2:
+
+* Harmony now uses Readline for input.
 
 Version 0.6.1:
 

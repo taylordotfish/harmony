@@ -35,7 +35,7 @@ import re
 import sys
 import traceback
 
-__version__ = "0.6.1"
+__version__ = "0.6.2"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
 RECAPTCHA_SITE_URL = "https://discord.com"
 
@@ -240,8 +240,8 @@ class DiscordCli:
                 stderr()
 
     def exec_single_command(self):
-        stderr("> ", end="", flush=True)
-        command = input()
+        prompt = "> " if sys.stdin.isatty() and sys.stdout.isatty() else ""
+        command = input(prompt)
         if not command:
             return False
         func = self.get_command_function(command)
