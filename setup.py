@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (C) 2016-2018 taylor.fish <contact@taylor.fish>
+# Copyright (C) 2016-2018, 2021 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
 #
@@ -43,7 +43,7 @@ License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)\
 
 setup(
     name="harmony-discord",
-    version="0.6.2",
+    version="0.6.3-dev",
     description=(
         "A free/libre program for performing various tasks with Discord."
     ),
@@ -73,4 +73,5 @@ setup(
         "requests>=2.18.1,<3",
         "librecaptcha[gtk]>=0.6.3,<0.7",
     ],
+    python_requires=">=3.5",
 )
