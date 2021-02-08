@@ -137,6 +137,7 @@ Dependencies
   - `Pillow`_
   - `requests`_
   - `librecaptcha[gtk] <librecaptcha-pkg_>`_
+  - `keyring`_
 
 The installation instructions above handle installing the Python packages.
 Alternatively, running ``pip3 install -r requirements.freeze.txt`` will install
@@ -146,6 +147,7 @@ specific versions of the dependencies that have been confirmed to work.
 .. _Pillow: https://pypi.org/project/Pillow/
 .. _requests: https://pypi.org/project/requests/
 .. _librecaptcha-pkg: https://pypi.org/project/librecaptcha/
+.. _keyring: https://pypi.org/project/keyring/
 
 
 License

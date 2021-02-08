@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
 
+from .config import get_config
 from .harmony import DiscordCli, __version__
 import os.path
 import readline
@@ -60,6 +61,7 @@ def main():
         cli.command_loop()
     finally:
         readline.write_history_file(history_path)
+        get_config().save()
 
 
 if __name__ == "__main__":

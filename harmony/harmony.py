@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 taylor.fish <contact@taylor.fish>
+# Copyright (C) 2017-2019, 2021 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
 #
@@ -16,7 +16,9 @@
 # along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
 
 from . import discord
+from . import keyring
 from . import messages
+from .config import get_config, CONFIG_PATH
 from .discord import Discord, FriendPolicy
 from .user_agents import random_user_agent
 
@@ -335,25 +337,71 @@ class DiscordCli:
             if not ask_yn("Try another CAPTCHA?", default_yes=True):
                 return response
 
+    def get_saved_password(self, email: str):
+        try:
+            return keyring.get_saved_password(email)
+        except keyring.Exception:
+            if self.debug:
+                stderr("Error getting saved password:\n")
+                traceback.print_exc()
+        return None
+
+    def maybe_save_password(self, email: str, password: str):
+        conf = get_config()
+        if not conf.ask_to_save_passwords:
+            return
+        answer = input(
+            'Save password? (Type "never" to stop asking) [y/N] ',
+        )
+        if answer.strip().lower() == "never":
+            conf.ask_to_save_passwords = False
+            print()
+            print("New passwords will not be saved.")
+            print("Edit or delete {} to change this.".format(CONFIG_PATH))
+            return
+        if answer[:1].lower() != "y":
+            return
+        try:
+            keyring.save_password(email, password)
+        except keyring.Exception:
+            stderr("Error saving password:\n")
+            traceback.print_exc()
+
     @warn_if_logged_in
     def log_in(self, undelete=False):
         email = input_nb("Email address: ")
-        password = getpass()
+        saved_password = self.get_saved_password(email)
+        if saved_password:
+            password = getpass(
+                "Password (leave blank to use saved password): ",
+            ) or saved_password
+        else:
+            password = getpass()
         print()
+
         response = self.try_with_captcha(
             "Login failed.", lambda key: self.dc.log_in(
                 email, password, undelete=undelete, captcha_key=key
             ), throw=False,
         )
+
+        def maybe_save_password(prefix=""):
+            print(prefix, end="")
+            if saved_password != password:
+                self.maybe_save_password(email, password)
+
         if response.success:
             print("You are now logged in.")
+            maybe_save_password()
             return
         if response.new_location:
             print("\nYou must authorize this new login location.")
             print('Check your email and use the "authorize-ip" command.')
+            maybe_save_password(prefix="\n")
         elif response.deletion_scheduled:
             print("\nThis account is scheduled for deletion.")
             print('You can cancel this with the "undelete" command.')
+            maybe_save_password(prefix="\n")
         raise CommandFailure
 
     def log_out(self):
@@ -390,6 +438,7 @@ class DiscordCli:
             ),
         )
         print(messages.SUCCESSFUL_REGISTRATION, end="")
+        self.maybe_save_password(email, password)
 
     @warn_if_logged_in
     def verify_email(self):

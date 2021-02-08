@@ -72,6 +72,7 @@ setup(
         "Pillow>=4.1.1",
         "requests>=2.18.1,<3",
         "librecaptcha[gtk]>=0.6.3,<0.7",
+        "keyring>=17.0.0",
     ],
     python_requires=">=3.5",
 )
