@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.6.3-dev
+Version 0.7.0
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service `Discord`_. Currently, it allows you to:
@@ -17,8 +17,7 @@ the messaging service `Discord`_. Currently, it allows you to:
 * Delete your account
 
 Actions that require you to complete a CAPTCHA (often required when logging in
-from a new location, for example) are automatically supported by using
-`librecaptcha`_.
+from a new location, for example) are supported by using `librecaptcha`_.
 
 For free/libre software that allows you to send and receive messages with
 Discord, check out `purple-discord`_.
@@ -82,16 +81,14 @@ more options. If you didn’t install it, use ``./harmony.py`` instead of
 What’s new
 ----------
 
-Version 0.6.2:
+Version 0.7.0:
+
+* Harmony can now save passwords in the system keyring.
+
+Version 0.6.x:
 
 * Harmony now uses Readline for input.
-
-Version 0.6.1:
-
 * Harmony should now work again (as of 2021-02-04).
-
-Version 0.6.0:
-
 * Fixed registration.
 * The librecaptcha GUI is now used when available.
 
