@@ -13,7 +13,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
+# along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
 from .config import get_config
 from .harmony import DiscordCli, __version__
