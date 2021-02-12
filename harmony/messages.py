@@ -13,7 +13,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Harmony.  If not, see <http://www.gnu.org/licenses/>.
+# along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
 MUST_SOLVE_CAPTCHA = """\
 You must solve a CAPTCHA challenge.
