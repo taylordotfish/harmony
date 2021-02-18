@@ -77,6 +77,12 @@ If you installed Harmony, simply run ``harmony``, or see ``harmony -h`` for
 more options. If you didn’t install it, use ``./harmony.py`` instead of
 ``harmony``.
 
+If an action requires you to solve a CAPTCHA, Harmony will use
+`librecaptcha`_’s GTK 3 GUI, if available, unless the environment variable
+``LIBRECAPTCHA_NO_GUI`` is set to a non-empty string.
+
+.. _librecaptcha: https://github.com/taylordotfish/librecaptcha
+
 
 What’s new
 ----------

@@ -40,6 +40,7 @@ import traceback
 __version__ = "0.7.1-dev"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"
 RECAPTCHA_SITE_URL = "https://discord.com"
+LIBRECAPTCHA_GUI = not os.getenv("LIBRECAPTCHA_NO_GUI")
 
 INTERACTIVE_HELP = """\
 Commands:
@@ -293,8 +294,11 @@ class DiscordCli:
         while True:
             try:
                 token = librecaptcha.get_token(
-                    RECAPTCHA_API_KEY, RECAPTCHA_SITE_URL, self.user_agent,
-                    gui=librecaptcha.has_gui(), debug=self.debug,
+                    RECAPTCHA_API_KEY,
+                    RECAPTCHA_SITE_URL,
+                    self.user_agent,
+                    gui=(LIBRECAPTCHA_GUI and librecaptcha.has_gui()),
+                    debug=self.debug,
                 )
             except Exception:
                 stderr("\nError encountered while solving the CAPTCHA:\n")
