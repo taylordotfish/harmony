@@ -278,7 +278,7 @@ class DiscordCli:
         self.handle_response(error_message, response, throw=throw)
         return response
 
-    def handle_response(self, error_message, response, *, throw):
+    def handle_response(self, error_message, response, *, throw: bool):
         if response.success:
             return
         if error_message is not None:
@@ -294,9 +294,9 @@ class DiscordCli:
         while True:
             try:
                 token = librecaptcha.get_token(
-                    RECAPTCHA_API_KEY,
-                    RECAPTCHA_SITE_URL,
-                    self.user_agent,
+                    api_key=RECAPTCHA_API_KEY,
+                    site_url=RECAPTCHA_SITE_URL,
+                    user_agent=self.user_agent,
                     gui=(LIBRECAPTCHA_GUI and librecaptcha.has_gui()),
                     debug=self.debug,
                 )
@@ -312,7 +312,12 @@ class DiscordCli:
             return token
 
     def try_once_with_captcha(
-            self, error_message, func, *, throw=True, ask=True):
+        self,
+        error_message,
+        func, *,
+        throw=True,
+        ask=True,
+    ):
         response = self.try_request(lambda: func(None))
         if not response.needs_captcha:
             self.handle_response(error_message, response, throw=throw)
