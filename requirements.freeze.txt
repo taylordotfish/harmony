@@ -1,4 +1,4 @@
 Pillow==8.1.0
 requests==2.25.1
-librecaptcha[gtk]==0.6.4
+librecaptcha[gtk]==0.7.0
 keyring==22.0.1

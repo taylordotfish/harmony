@@ -43,7 +43,7 @@ License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)\
 
 setup(
     name="harmony-discord",
-    version="0.7.1-dev",
+    version="0.7.1",
     description=(
         "A free/libre program for performing various tasks with Discord."
     ),
@@ -71,7 +71,7 @@ setup(
     install_requires=[
         "Pillow>=4.1.1",
         "requests>=2.18.1,<3",
-        "librecaptcha[gtk]>=0.6.3,<0.7",
+        "librecaptcha[gtk]>=0.6.3,<1",
         "keyring>=17.0.0",
     ],
     python_requires=">=3.5",

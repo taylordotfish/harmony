@@ -4,32 +4,62 @@
 # flake8: noqa
 USER_AGENTS = [
     [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36",
         {
             "os": "Windows",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "87.0.4280.141",
+            "browser_version": "88.0.4324.150",
             "os_version": "10"
         }
     ],
     [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0",
         {
             "os": "Windows",
             "browser": "Firefox",
             "device": "",
-            "browser_version": "84.0",
+            "browser_version": "85.0",
             "os_version": "10"
         }
     ],
     [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36",
         {
             "os": "Windows",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "87.0.4280.88",
+            "browser_version": "88.0.4324.182",
+            "os_version": "10"
+        }
+    ],
+    [
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15",
+        {
+            "os": "Mac OS X",
+            "browser": "Safari",
+            "device": "",
+            "browser_version": "14.0.3",
+            "os_version": "10.15.6"
+        }
+    ],
+    [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36",
+        {
+            "os": "Windows",
+            "browser": "Chrome",
+            "device": "",
+            "browser_version": "88.0.4324.146",
+            "os_version": "10"
+        }
+    ],
+    [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36",
+        {
+            "os": "Windows",
+            "browser": "Chrome",
+            "device": "",
+            "browser_version": "88.0.4324.190",
             "os_version": "10"
         }
     ],
@@ -44,22 +74,12 @@ USER_AGENTS = [
         }
     ],
     [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Safari/605.1.15",
-        {
-            "os": "Mac OS X",
-            "browser": "Safari",
-            "device": "",
-            "browser_version": "14.0.2",
-            "os_version": "10.15.6"
-        }
-    ],
-    [
-        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0",
+        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:85.0) Gecko/20100101 Firefox/85.0",
         {
             "os": "Linux",
             "browser": "Firefox",
             "device": "",
-            "browser_version": "84.0",
+            "browser_version": "85.0",
             "os_version": ""
         }
     ],
@@ -74,73 +94,73 @@ USER_AGENTS = [
         }
     ],
     [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36",
         {
             "os": "Mac OS X",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "87.0.4280.141",
+            "browser_version": "88.0.4324.150",
             "os_version": "10.15.7"
         }
     ],
     [
-        "Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0",
+        {
+            "os": "Windows",
+            "browser": "Firefox",
+            "device": "",
+            "browser_version": "86.0",
+            "os_version": "10"
+        }
+    ],
+    [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+        {
+            "os": "Windows",
+            "browser": "Chrome",
+            "device": "",
+            "browser_version": "87.0.4280.141",
+            "os_version": "10"
+        }
+    ],
+    [
+        "Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101 Firefox/85.0",
         {
             "os": "Linux",
             "browser": "Firefox",
             "device": "",
-            "browser_version": "84.0",
+            "browser_version": "85.0",
             "os_version": ""
         }
     ],
     [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Safari/605.1.15",
+        {
+            "os": "Mac OS X",
+            "browser": "Safari",
+            "device": "",
+            "browser_version": "14.0.2",
+            "os_version": "10.15.6"
+        }
+    ],
+    [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36 Edg/88.0.705.63",
         {
             "os": "Windows",
-            "browser": "Firefox",
+            "browser": "Chrome",
             "device": "",
-            "browser_version": "85.0",
+            "browser_version": "88.0.4324.150",
             "os_version": "10"
         }
     ],
     [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75",
-        {
-            "os": "Windows",
-            "browser": "Chrome",
-            "device": "",
-            "browser_version": "87.0.4280.141",
-            "os_version": "10"
-        }
-    ],
-    [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36",
         {
             "os": "Mac OS X",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "87.0.4280.141",
-            "os_version": "11.1.0"
-        }
-    ],
-    [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-        {
-            "os": "Mac OS X",
-            "browser": "Chrome",
-            "device": "",
-            "browser_version": "87.0.4280.88",
+            "browser_version": "88.0.4324.182",
             "os_version": "10.15.7"
-        }
-    ],
-    [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
-        {
-            "os": "Mac OS X",
-            "browser": "Chrome",
-            "device": "",
-            "browser_version": "88.0.4324.96",
-            "os_version": "11.1.0"
         }
     ],
     [
@@ -154,92 +174,82 @@ USER_AGENTS = [
         }
     ],
     [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:84.0) Gecko/20100101 Firefox/84.0",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:85.0) Gecko/20100101 Firefox/85.0",
         {
             "os": "Mac OS X",
             "browser": "Firefox",
             "device": "",
-            "browser_version": "84.0",
+            "browser_version": "85.0",
             "os_version": "10"
         }
     ],
     [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Safari/605.1.15",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36 Edg/88.0.705.74",
+        {
+            "os": "Windows",
+            "browser": "Chrome",
+            "device": "",
+            "browser_version": "88.0.4324.182",
+            "os_version": "10"
+        }
+    ],
+    [
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:85.0) Gecko/20100101 Firefox/85.0",
+        {
+            "os": "Mac OS X",
+            "browser": "Firefox",
+            "device": "",
+            "browser_version": "85.0",
+            "os_version": "10"
+        }
+    ],
+    [
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36",
+        {
+            "os": "Linux",
+            "browser": "Chrome",
+            "device": "",
+            "browser_version": "88.0.4324.182",
+            "os_version": ""
+        }
+    ],
+    [
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15",
         {
             "os": "Mac OS X",
             "browser": "Safari",
             "device": "",
-            "browser_version": "14.0.2",
+            "browser_version": "14.0.3",
             "os_version": "10.15.7"
         }
     ],
     [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36",
         {
             "os": "Mac OS X",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "87.0.4280.88",
-            "os_version": "11.1.0"
+            "browser_version": "88.0.4324.150",
+            "os_version": "11.2.1"
         }
     ],
     [
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-        {
-            "os": "Linux",
-            "browser": "Chrome",
-            "device": "",
-            "browser_version": "87.0.4280.88",
-            "os_version": ""
-        }
-    ],
-    [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36 Edg/88.0.705.68",
         {
             "os": "Windows",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "88.0.4324.96",
+            "browser_version": "88.0.4324.150",
             "os_version": "10"
         }
     ],
     [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:84.0) Gecko/20100101 Firefox/84.0",
-        {
-            "os": "Mac OS X",
-            "browser": "Firefox",
-            "device": "",
-            "browser_version": "84.0",
-            "os_version": "10"
-        }
-    ],
-    [
-        "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
-        {
-            "os": "Windows",
-            "browser": "Chrome",
-            "device": "",
-            "browser_version": "87.0.4280.141",
-            "os_version": "Server 2008 R2 / 7"
-        }
-    ],
-    [
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36",
         {
             "os": "Linux",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "87.0.4280.141",
-            "os_version": ""
-        }
-    ],
-    [
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
-        {
-            "os": "Linux",
-            "browser": "Chrome",
-            "device": "",
-            "browser_version": "88.0.4324.96",
+            "browser_version": "88.0.4324.150",
             "os_version": ""
         }
     ],
@@ -254,53 +264,43 @@ USER_AGENTS = [
         }
     ],
     [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.66",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36",
         {
-            "os": "Windows",
+            "os": "Mac OS X",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "87.0.4280.88",
-            "os_version": "10"
+            "browser_version": "88.0.4324.182",
+            "os_version": "11.2.1"
         }
     ],
     [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36 Edg/88.0.705.50",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36",
         {
-            "os": "Windows",
+            "os": "Mac OS X",
             "browser": "Chrome",
             "device": "",
-            "browser_version": "88.0.4324.96",
-            "os_version": "10"
+            "browser_version": "88.0.4324.192",
+            "os_version": "11.2.1"
         }
     ],
     [
-        "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0",
-        {
-            "os": "Windows",
-            "browser": "Firefox",
-            "device": "",
-            "browser_version": "84.0",
-            "os_version": "Server 2008 R2 / 7"
-        }
-    ],
-    [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Safari/605.1.15",
         {
             "os": "Mac OS X",
             "browser": "Safari",
             "device": "",
-            "browser_version": "14.0.1",
-            "os_version": "10.15.6"
+            "browser_version": "14.0.2",
+            "os_version": "10.15.7"
         }
     ],
     [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 OPR/73.0.3856.344",
         {
-            "os": "Mac OS X",
+            "os": "Windows",
             "browser": "Chrome",
             "device": "",
             "browser_version": "87.0.4280.141",
-            "os_version": "10.14.6"
+            "os_version": "10"
         }
     ]
 ]

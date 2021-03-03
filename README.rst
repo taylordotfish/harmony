@@ -1,7 +1,7 @@
 Harmony
 =======
 
-Version 0.7.1-dev
+Version 0.7.1
 
 Harmony is a free/libre program that allows you to perform various actions with
 the messaging service `Discord`_. Currently, it allows you to:
@@ -86,6 +86,13 @@ If an action requires you to solve a CAPTCHA, Harmony will use
 
 What’s new
 ----------
+
+Version 0.7.1:
+
+* Harmony now works with newer versions of librecaptcha.
+* Harmony now won’t use the librecaptcha GUI if the environment variable
+  ``LIBRECAPTCHA_NO_GUI`` is non-empty.
+* Updated the user-agent list.
 
 Version 0.7.0:
 
