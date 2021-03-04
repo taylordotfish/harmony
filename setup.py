@@ -43,7 +43,7 @@ License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)\
 
 setup(
     name="harmony-discord",
-    version="0.7.1",
+    version="0.7.2-dev",
     description=(
         "A free/libre program for performing various tasks with Discord."
     ),
