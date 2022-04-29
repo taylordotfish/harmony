@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 taylor.fish <contact@taylor.fish>
+# Copyright (C) 2017-2019, 2022 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
 #
@@ -16,6 +16,10 @@
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
 MUST_SOLVE_CAPTCHA = """\
+=======================================================================
+UPDATE: Discord switched from reCAPTCHA to hCaptcha, so this won't
+work anymore. You'll probably have to log in through the website first.
+=======================================================================
 You must solve a CAPTCHA challenge.
 You will be guided through the steps necessary to complete the challenge.
 Press enter to start the challenge...
