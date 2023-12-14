@@ -15,11 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
-from .config import get_config
-from .harmony import DiscordCli, __version__
 import os.path
 import readline
 import sys
+
+from .config import get_config
+from .harmony import DiscordCli, __version__
 
 USAGE = """\
 Usage:

@@ -15,14 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
-from requests.exceptions import HTTPError
-import requests
-
 import base64
 import enum
 import json
 import re
 import sys
+
+import requests
+from requests.exceptions import HTTPError
 
 BASE_URL = "https://discordapp.com/api/v8/"
 CLIENT_BUILD_NUMBER = 75681

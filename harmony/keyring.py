@@ -16,9 +16,9 @@
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Optional
+
 import keyring
 import keyring.errors
-
 
 Exception = keyring.errors.KeyringError
 

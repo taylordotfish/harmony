@@ -15,17 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
-from . import discord
-from . import keyring
-from . import messages
-from .config import get_config, CONFIG_PATH
-from .discord import Discord, FriendPolicy
-from .user_agents import random_user_agent
-
-import librecaptcha
-from PIL import Image
-
-from io import BytesIO
 import base64
 import builtins
 import functools
@@ -36,6 +25,15 @@ import os.path
 import re
 import sys
 import traceback
+from io import BytesIO
+
+import librecaptcha
+from PIL import Image
+
+from . import discord, keyring, messages
+from .config import CONFIG_PATH, get_config
+from .discord import Discord, FriendPolicy
+from .user_agents import random_user_agent
 
 __version__ = "0.7.2"
 RECAPTCHA_API_KEY = "6Lef5iQTAAAAAKeIvIY-DeexoO3gj7ryl9rLMEnn"

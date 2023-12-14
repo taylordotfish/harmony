@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
-from .user_agent_data import USER_AGENTS
 import random
+
+from .user_agent_data import USER_AGENTS
 
 
 def random_user_agent():

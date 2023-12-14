@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
-from configparser import ConfigParser, DEFAULTSECT
-from io import StringIO
 import os
 import os.path
+from configparser import DEFAULTSECT, ConfigParser
+from io import StringIO
 
 CONFIG_PATH = os.path.join(os.path.expanduser("~"), ".config", "harmony.conf")
 
