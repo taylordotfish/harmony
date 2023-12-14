@@ -158,6 +158,7 @@ def needs_auth(func):
             print("You are not logged in.")
             raise CommandFailure
         return func(self, *args, **kwargs)
+
     return result
 
 
@@ -170,18 +171,16 @@ def warn_if_logged_in(func):
                 return
             print()
         return func(self, *args, **kwargs)
+
     return result
 
 
 def explicit_filter_to_str(explicit_filter):
     explicit_filter = discord.ExplicitFilter(explicit_filter)
     return {
-        discord.ExplicitFilter.NONE:
-            "Don't scan messages from anyone.",
-        discord.ExplicitFilter.ALL_BUT_FRIENDS:
-            "Scan messages from everyone except friends.",
-        discord.ExplicitFilter.ALL:
-            "Scan messages from everyone.",
+        discord.ExplicitFilter.NONE: "Don't scan messages from anyone.",
+        discord.ExplicitFilter.ALL_BUT_FRIENDS: "Scan messages from everyone except friends.",
+        discord.ExplicitFilter.ALL: "Scan messages from everyone.",
     }.get(explicit_filter, explicit_filter.name)
 
 
@@ -314,7 +313,8 @@ class DiscordCli:
     def try_once_with_captcha(
         self,
         error_message,
-        func, *,
+        func,
+        *,
         throw=True,
         ask=True,
     ):
@@ -381,17 +381,22 @@ class DiscordCli:
         email = input_nb("Email address: ")
         saved_password = self.get_saved_password(email)
         if saved_password:
-            password = getpass(
-                "Password (leave blank to use saved password): ",
-            ) or saved_password
+            password = (
+                getpass(
+                    "Password (leave blank to use saved password): ",
+                )
+                or saved_password
+            )
         else:
             password = getpass()
         print()
 
         response = self.try_with_captcha(
-            "Login failed.", lambda key: self.dc.log_in(
+            "Login failed.",
+            lambda key: self.dc.log_in(
                 email, password, undelete=undelete, captcha_key=key
-            ), throw=False,
+            ),
+            throw=False,
         )
 
         def maybe_save_password(prefix=""):
@@ -441,9 +446,13 @@ class DiscordCli:
 
         print()
         self.try_with_captcha(
-            "Registration failed.", lambda key: self.dc.register(
-                email=email, username=username, password=password,
-                birthday=birthday, captcha_key=key,
+            "Registration failed.",
+            lambda key: self.dc.register(
+                email=email,
+                username=username,
+                password=password,
+                birthday=birthday,
+                captcha_key=key,
             ),
         )
         print(messages.SUCCESSFUL_REGISTRATION, end="")
@@ -501,7 +510,8 @@ class DiscordCli:
     @needs_auth
     def get_account_details(self):
         response = self.try_or_error(
-            "Could not get account details.", self.dc.get_account_details)
+            "Could not get account details.", self.dc.get_account_details
+        )
         print("Raw account details: {}\n".format(response.formatted_json))
         print("Username:", response.username)
         print("Discriminator:", response.discriminator)
@@ -512,7 +522,8 @@ class DiscordCli:
     @needs_auth
     def set_account_details(self):
         response = self.try_or_error(
-            "Could not get account details.", self.dc.get_account_details,
+            "Could not get account details.",
+            self.dc.get_account_details,
         )
         params = response.to_params()
         if ask_yn("Change password?"):
@@ -534,9 +545,12 @@ class DiscordCli:
                 try:
                     image = Image.open(avatar_path)
                 except OSError as e:
-                    print("Could not load image: {}: {}".format(
-                        type(e).__name__, e,
-                    ))
+                    print(
+                        "Could not load image: {}: {}".format(
+                            type(e).__name__,
+                            e,
+                        )
+                    )
                     continue
                 image_data = BytesIO()
                 image.save(image_data, "PNG")
@@ -556,27 +570,35 @@ class DiscordCli:
 
         print("Account details updated.")
         if not response.verified_email:
-            print("\nYour email address is not verified. You can verify it "
-                  'with the "verify" command.')
+            print(
+                "\nYour email address is not verified. You can verify it "
+                'with the "verify" command.'
+            )
 
     @needs_auth
     def get_settings(self):
         response = self.try_or_error(
-            "Could not get settings.", self.dc.get_settings)
+            "Could not get settings.", self.dc.get_settings
+        )
         print("Raw settings: {}\n".format(response.formatted_json))
-        print("Explicit message filter:",
-              explicit_filter_to_str(response.explicit_filter))
-        print("Allow DMs from members of new servers?",
-              to_yn(response.allow_dms))
+        print(
+            "Explicit message filter:",
+            explicit_filter_to_str(response.explicit_filter),
+        )
+        print(
+            "Allow DMs from members of new servers?", to_yn(response.allow_dms)
+        )
 
         policy = response.friend_policy
         print("Who can add you as a friend:")
-        print("  Friends of friends:",
-              to_yn(FriendPolicy.has_mutual_friends(policy)))
-        print("  Server members:",
-              to_yn(FriendPolicy.has_server_members(policy)))
-        print("  Everyone:",
-              to_yn(FriendPolicy.has_all(policy)))
+        print(
+            "  Friends of friends:",
+            to_yn(FriendPolicy.has_mutual_friends(policy)),
+        )
+        print(
+            "  Server members:", to_yn(FriendPolicy.has_server_members(policy))
+        )
+        print("  Everyone:", to_yn(FriendPolicy.has_all(policy)))
 
     @needs_auth
     def set_settings(self):
@@ -653,13 +675,19 @@ class DiscordCli:
             self.dc.invite_details(invite_id),
         )
 
-        print('\n{} has invited you to join the server "{}".'.format(
-            invite.inviter_tag, invite.server_name,
-        ))
+        print(
+            '\n{} has invited you to join the server "{}".'.format(
+                invite.inviter_tag,
+                invite.server_name,
+            )
+        )
         if invite.member_count is not None:
-            print("The server has approximately {} {}.".format(
-                invite.member_count, pluralize(invite.member_count, "member"),
-            ))
+            print(
+                "The server has approximately {} {}.".format(
+                    invite.member_count,
+                    pluralize(invite.member_count, "member"),
+                )
+            )
         if not ask_yn("Accept invite?"):
             return
         self.try_or_error(
@@ -682,7 +710,8 @@ class DiscordCli:
 
     def print_servers(self, owned=False, prefix=""):
         servers_resp = self.try_or_error(
-            prefix + "Could not get servers.", self.dc.servers,
+            prefix + "Could not get servers.",
+            self.dc.servers,
         )
         print(prefix, end="")
 
@@ -691,8 +720,9 @@ class DiscordCli:
             servers = [s for s in servers_resp.servers if s.is_owner]
         if not servers:
             print(
-                "You don't own any servers." if owned else
-                "You're not in any servers.",
+                "You don't own any servers."
+                if owned
+                else "You're not in any servers.",
             )
             return False
 
@@ -703,7 +733,8 @@ class DiscordCli:
 
     def print_members(self, server_id, prefix=""):
         members_resp = self.try_or_error(
-            prefix + "Could not get server members.", self.dc.server_members,
+            prefix + "Could not get server members.",
+            self.dc.server_members,
             server_id,
         )
         print(prefix + "Members in this server:")
@@ -732,7 +763,7 @@ class DiscordCli:
     def server_members(self):
         if not self.print_servers(owned=False):
             return
-        server_id = input_nb('\nServer ID: ')
+        server_id = input_nb("\nServer ID: ")
         self.print_members(server_id, prefix="\n")
 
     @needs_auth

@@ -81,11 +81,13 @@ class ResponseWithToken(GenericResponse):
 class LogInResponse(ResponseWithToken):
     @property
     def new_location(self):
-        return bool(re.search(
-            r"\b(account_login_verification_email|new login location)\b",
-            self.text,
-            re.I,
-        ))
+        return bool(
+            re.search(
+                r"\b(account_login_verification_email|new login location)\b",
+                self.text,
+                re.I,
+            )
+        )
 
     @property
     def deletion_scheduled(self):
@@ -167,7 +169,8 @@ class InviteDetailsResponse(GenericResponse):
     @property
     def inviter_tag(self):
         return "{}#{}".format(
-            self.inviter_username, self.inviter_discriminator,
+            self.inviter_username,
+            self.inviter_discriminator,
         )
 
     @property
@@ -232,9 +235,13 @@ class ServerListResponse(GenericResponse):
     def servers(self):
         result = []
         for guild in self.json:
-            result.append(ServerListItem(
-                id=guild["id"], name=guild["name"], is_owner=guild["owner"],
-            ))
+            result.append(
+                ServerListItem(
+                    id=guild["id"],
+                    name=guild["name"],
+                    is_owner=guild["owner"],
+                )
+            )
         return result
 
 
@@ -251,10 +258,13 @@ class ServerMembersResponse(GenericResponse):
         result = []
         for member in self.json:
             user = member["user"]
-            result.append(ServerMemberListItem(
-                username=user["username"], discriminator=user["discriminator"],
-                id=user["id"],
-            ))
+            result.append(
+                ServerMemberListItem(
+                    username=user["username"],
+                    discriminator=user["discriminator"],
+                    id=user["id"],
+                )
+            )
         return result
 
 
@@ -346,17 +356,29 @@ class Discord:
             headers.setdefault("Referer", full_referer)
 
         if "X-Super-Properties" not in headers:
-            headers["X-Super-Properties"] = base64.b64encode(json.dumps(
-                self.super_properties, separators=",:",
-            ).encode()).decode()
+            headers["X-Super-Properties"] = base64.b64encode(
+                json.dumps(
+                    self.super_properties,
+                    separators=",:",
+                ).encode()
+            ).decode()
         if "X-Fingerprint" not in headers:
             headers["X-Fingerprint"] = self.get_or_request_fingerprint()
         headers.setdefault("Origin", "https://discordapp.com")
         return headers
 
     def http_request(
-            self, func, url, *, headers=None, allow_errors=frozenset({400}),
-            auth=False, no_debug_response=False, referer="", **kwargs):
+        self,
+        func,
+        url,
+        *,
+        headers=None,
+        allow_errors=frozenset({400}),
+        auth=False,
+        no_debug_response=False,
+        referer="",
+        **kwargs
+    ):
         self.ensure_valid_ua()
         headers = self.get_headers(headers, auth, referer)
 
@@ -371,9 +393,12 @@ class Discord:
         if "json" in kwargs:
             json_data = kwargs["json"]
             self.debug("[http] [{}] [json] {!r}".format(method, json_data))
-        self.debug("[http] [{}] [status code] {}".format(
-            method, r.status_code,
-        ))
+        self.debug(
+            "[http] [{}] [status code] {}".format(
+                method,
+                r.status_code,
+            )
+        )
 
         if not no_debug_response:
             self.debug("[http] [{}] [response] {}".format(method, r.text))
@@ -418,12 +443,19 @@ class Discord:
             )
 
     def request_fingerprint(self):
-        r = self.get("experiments", headers={
-            "X-Context-Properties": base64.b64encode(
-                json.dumps({"location": "Login"}, separators=",:").encode(),
-            ).decode(),
-            "X-Fingerprint": None,
-        }, allow_errors=None, referer="login?redirect=%2F")
+        r = self.get(
+            "experiments",
+            headers={
+                "X-Context-Properties": base64.b64encode(
+                    json.dumps(
+                        {"location": "Login"}, separators=",:"
+                    ).encode(),
+                ).decode(),
+                "X-Fingerprint": None,
+            },
+            allow_errors=None,
+            referer="login?redirect=%2F",
+        )
         self.fingerprint = r.json()["fingerprint"]
 
     def get_or_request_fingerprint(self):
@@ -445,14 +477,18 @@ class Discord:
         return self.token is not None
 
     def log_in(self, email, password, captcha_key=None, undelete=False):
-        r = self.post("auth/login", json={
-            "login": email,
-            "password": password,
-            "undelete": undelete,
-            "captcha_key": captcha_key,
-            "login_source": None,
-            "gift_code_sku_id": None,
-        }, referer="login")
+        r = self.post(
+            "auth/login",
+            json={
+                "login": email,
+                "password": password,
+                "undelete": undelete,
+                "captcha_key": captcha_key,
+                "login_source": None,
+                "gift_code_sku_id": None,
+            },
+            referer="login",
+        )
 
         resp = LogInResponse(r)
         if resp.success:
@@ -462,19 +498,30 @@ class Discord:
     def log_out(self):
         self.token = None
 
-    def register(self, username, password, email, birthday, captcha_key=None,
-                 invite=None):
-        r = self.post("auth/register", json={
-            "fingerprint": self.get_or_request_fingerprint(),
-            "email": email,
-            "username": username,
-            "password": password,
-            "invite": invite,
-            "consent": True,
-            "date_of_birth": birthday,
-            "gift_code_sku_id": None,
-            "captcha_key": captcha_key,
-        }, referer="register")
+    def register(
+        self,
+        username,
+        password,
+        email,
+        birthday,
+        captcha_key=None,
+        invite=None,
+    ):
+        r = self.post(
+            "auth/register",
+            json={
+                "fingerprint": self.get_or_request_fingerprint(),
+                "email": email,
+                "username": username,
+                "password": password,
+                "invite": invite,
+                "consent": True,
+                "date_of_birth": birthday,
+                "gift_code_sku_id": None,
+                "captcha_key": captcha_key,
+            },
+            referer="register",
+        )
 
         resp = ResponseWithToken(r)
         if resp.success:
@@ -483,10 +530,14 @@ class Discord:
 
     def verify_email(self, token, captcha_key=None):
         referer = "verify?token=" + token
-        r = self.post("auth/verify", json={
-            "token": token,
-            "captcha_key": captcha_key,
-        }, referer=referer)
+        r = self.post(
+            "auth/verify",
+            json={
+                "token": token,
+                "captcha_key": captcha_key,
+            },
+            referer=referer,
+        )
 
         resp = ResponseWithToken(r)
         if resp.success:
@@ -518,13 +569,17 @@ class Discord:
         return resp
 
     def set_account_details(self, params, password):
-        r = self.patch("users/@me", auth=True, json={
-            "username": params.username,
-            "email": params.email,
-            "avatar": params.avatar,
-            "password": password,
-            "new_password": params.new_password,
-        })
+        r = self.patch(
+            "users/@me",
+            auth=True,
+            json={
+                "username": params.username,
+                "email": params.email,
+                "avatar": params.avatar,
+                "password": password,
+                "new_password": params.new_password,
+            },
+        )
         resp = AccountDetailsResponse(r)
         if resp.success and resp.has_token:
             self.token = resp.token
@@ -554,9 +609,13 @@ class Discord:
         return resp
 
     def delete_account(self, password):
-        r = self.post("users/@me/delete", json={
-            "password": password,
-        }, auth=True)
+        r = self.post(
+            "users/@me/delete",
+            json={
+                "password": password,
+            },
+            auth=True,
+        )
         resp = AccountDeletionResponse(r)
         if resp.success:
             self.log_out()
@@ -589,14 +648,19 @@ class Discord:
 
     def server_members(self, server_id, limit=1000):
         r = self.get(
-            "guilds/{}/members?limit={}".format(server_id, limit), auth=True)
+            "guilds/{}/members?limit={}".format(server_id, limit), auth=True
+        )
         resp = ServerMembersResponse(r)
         return resp
 
     def transfer_server(self, server_id, new_owner_id):
-        r = self.patch("guilds/{}".format(server_id), json={
-            "owner_id": new_owner_id,
-        }, auth=True)
+        r = self.patch(
+            "guilds/{}".format(server_id),
+            json={
+                "owner_id": new_owner_id,
+            },
+            auth=True,
+        )
         resp = GenericResponse(r)
         return resp
 
