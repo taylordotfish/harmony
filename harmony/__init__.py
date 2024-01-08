@@ -1,3 +1,4 @@
+"""Harmony package."""
 # Copyright (C) 2017-2019 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.

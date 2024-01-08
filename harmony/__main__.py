@@ -1,3 +1,4 @@
+"""Harmony main entry point package."""
 # Copyright (C) 2017-2018 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
@@ -30,6 +31,7 @@ Usage:
 
 
 def main():
+    """Initialize Harmony."""
     args = sys.argv[1:]
     if "-h" in args or "--help" in args:
         print(USAGE, end="")
