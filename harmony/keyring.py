@@ -1,3 +1,4 @@
+"""Harmony keyring."""
 # Copyright (C) 2021 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
@@ -16,16 +17,18 @@
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Optional
+
 import keyring
 import keyring.errors
 
-
-Exception = keyring.errors.KeyringError
+Exception = keyring.errors.KeyringError  # pylint: disable=redefined-builtin
 
 
 def get_saved_password(email: str) -> Optional[str]:
+    """Get saved password for specified account from the Harmony keyring."""
     return keyring.get_password("harmony", email)
 
 
 def save_password(email: str, password: str):
+    """Ad an account to the Harmony keyring."""
     keyring.set_password("harmony", email, password)

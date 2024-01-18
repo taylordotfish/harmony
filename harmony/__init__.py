@@ -1,3 +1,4 @@
+"""Harmony package."""
 # Copyright (C) 2017-2019 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
@@ -16,6 +17,6 @@
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
 # flake8: noqa
-from . import harmony, discord
-from .harmony import __version__
+from . import discord, harmony
 from .__main__ import main
+from .harmony import __version__

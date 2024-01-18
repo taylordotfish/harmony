@@ -1,3 +1,4 @@
+"""Harmony messages."""
 # Copyright (C) 2017-2019, 2022 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.

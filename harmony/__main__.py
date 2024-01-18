@@ -1,3 +1,4 @@
+"""Harmony main entry point package."""
 # Copyright (C) 2017-2018 taylor.fish <contact@taylor.fish>
 #
 # This file is part of Harmony.
@@ -15,11 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Harmony.  If not, see <https://www.gnu.org/licenses/>.
 
-from .config import get_config
-from .harmony import DiscordCli, __version__
 import os.path
 import readline
 import sys
+
+from .config import get_config
+from .harmony import DiscordCli, __version__
 
 USAGE = """\
 Usage:
@@ -29,6 +31,7 @@ Usage:
 
 
 def main():
+    """Initialize Harmony."""
     args = sys.argv[1:]
     if "-h" in args or "--help" in args:
         print(USAGE, end="")
